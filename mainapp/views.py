@@ -1,15 +1,15 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from rest_framework.serializers import Serializer
-from .models import Customer, Student, Financial, Result, Personal, Course, Customer_access
-from .forms import StudentForm, PersonalForm, ResultForm, FinancialForm, CourseForm, CustomerForm,CustomerAccessForm
+from .models import Customer, Student, Financial, Result, Course, Customer_access
+from .forms import StudentForm, ResultForm, FinancialForm, CourseForm, CustomerForm,CustomerAccessForm
 from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import personalSerializer, academicSerializer
+from .serializers import studentSerializer, academicSerializer
 
 
 
@@ -20,13 +20,11 @@ def home(request):
 
 def all_students(request):
     student_list = Student.objects.all()
-    personal_list = Personal.objects.all()
     financial_list = Financial.objects.all()
     course_list = Course.objects.all()
     result_list = Result.objects.all()
     return render(request, 'mainapp/student_list.html',
     {"student_list": student_list, 
-    "personal_list": personal_list,
     "financial_list": financial_list,
     "course_list": course_list,
     "result_list": result_list
@@ -46,11 +44,6 @@ def show_student(request, student_id):
     student = Student.objects.get(pk=student_id)
     return render(request, 'mainapp/show_student.html',
     {"student": student})
-
-def show_personal(request, personal_id):
-    personal = Personal.objects.get(pk=personal_id)
-    return render(request, 'mainapp/show_personal.html',
-    {"personal": personal})
 
 def show_academic(request, academic_id):
     academic = Result.objects.get(pk=academic_id)
@@ -80,22 +73,6 @@ def add_student(request):
     return render(request,'mainapp/add_student.html', 
     {"student_form": student_form, 
     "submitted": submitted})
-
-def add_personal(request):
-    submitted = False
-    if request.method == "POST":
-        personal_form = PersonalForm(request.POST)
-        if personal_form.is_valid:
-            personal_form.save()
-            return HttpResponseRedirect('/add_personal?submitted=True')
-    else:
-        personal_form = PersonalForm    
-        if 'submitted' in request.GET:
-            submitted = True
-    
-    return render(request,'mainapp/add_personal.html', 
-    {"submitted": submitted, 
-    "personal_form": personal_form})
 
 def add_result(request):
     submitted = False
@@ -221,13 +198,13 @@ def apiOverview(request):
     return Response(api_urls)
 
 @api_view(['GET'])
-def personalApi(request, pk):
+def studentApi(request, pk):
     try:
-        personal = Personal.objects.get(id=pk)
-    except Personal.DoesNotExist:
+        personal = Student.objects.get(nsu_id=pk)
+    except Student.DoesNotExist:
         return Response(status=status.HTTP_404_NOT_FOUND)
 
-    serializer = personalSerializer(personal, many=False)
+    serializer = studentSerializer(personal, many=False)
     return Response(serializer.data)
 
 @api_view(['GET'])

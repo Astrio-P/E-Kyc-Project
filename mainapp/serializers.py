@@ -1,9 +1,9 @@
 from rest_framework import serializers 
-from .models import Customer, Student, Financial, Result, Personal, Course
+from .models import Customer, Student, Financial, Result, Course
 
-class personalSerializer(serializers.ModelSerializer):
+class studentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Personal
+        model = Student
         fields = '__all__'
 
 class academicSerializer(serializers.ModelSerializer):
