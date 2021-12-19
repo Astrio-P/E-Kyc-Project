@@ -3,6 +3,9 @@ from .import views
 
 urlpatterns = [
     path('', views.home, name="home"),
+    path('api/', views.apiOverview, name="api-overview"),
+    path('api/personal/<str:pk>', views.personalApi, name="personal-api"),
+    path('api/academic/<str:pk>', views.academicApi, name="academic-api"),
     path('students', views.all_students, name="list_students"),
     path('show_student/<student_id>', views.show_student, name="show_student"),
     path('show_personal/<personal_id>', views.show_personal, name="show_personal"),

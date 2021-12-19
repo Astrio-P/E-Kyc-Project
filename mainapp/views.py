@@ -1,12 +1,22 @@
 from django.shortcuts import redirect, render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from rest_framework.serializers import Serializer
 from .models import Customer, Student, Financial, Result, Personal, Course, Customer_access
 from .forms import StudentForm, PersonalForm, ResultForm, FinancialForm, CourseForm, CustomerForm,CustomerAccessForm
+from rest_framework import viewsets
+from rest_framework import permissions
+from rest_framework import status
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
+from .serializers import personalSerializer, academicSerializer
 
 
 
 def home(request):
     return render(request,'mainapp/home.html', {})
+
+# Viewing Info Functions...
 
 def all_students(request):
     student_list = Student.objects.all()
@@ -21,6 +31,39 @@ def all_students(request):
     "course_list": course_list,
     "result_list": result_list
     })
+
+def all_customers(request):
+    customer_list = Customer.objects.all()
+    return render(request, 'mainapp/customer_list.html',
+    {"customer_list": customer_list,})
+
+def show_customer(request, customer_id):
+    customer = Customer.objects.get(pk=customer_id)
+    return render(request, 'mainapp/show_customer.html',
+    {"customer": customer})
+
+def show_student(request, student_id):
+    student = Student.objects.get(pk=student_id)
+    return render(request, 'mainapp/show_student.html',
+    {"student": student})
+
+def show_personal(request, personal_id):
+    personal = Personal.objects.get(pk=personal_id)
+    return render(request, 'mainapp/show_personal.html',
+    {"personal": personal})
+
+def show_academic(request, academic_id):
+    academic = Result.objects.get(pk=academic_id)
+    return render(request, 'mainapp/show_academic.html',
+    {"academic": academic})
+
+def show_financial(request, financial_id):
+    financial = Financial.objects.get(pk=financial_id)
+    return render(request, 'mainapp/show_financial.html',
+    {"financial": financial})
+
+
+# Add Functions....
 
 def add_student(request):
     submitted = False
@@ -118,35 +161,8 @@ def add_customer(request):
     {"customer_form": customer_form, 
     "submitted": submitted})
 
-def all_customers(request):
-    customer_list = Customer.objects.all()
-    return render(request, 'mainapp/customer_list.html',
-    {"customer_list": customer_list,})
 
-def show_customer(request, customer_id):
-    customer = Customer.objects.get(pk=customer_id)
-    return render(request, 'mainapp/show_customer.html',
-    {"customer": customer})
-
-def show_student(request, student_id):
-    student = Student.objects.get(pk=student_id)
-    return render(request, 'mainapp/show_student.html',
-    {"student": student})
-
-def show_personal(request, personal_id):
-    personal = Personal.objects.get(pk=personal_id)
-    return render(request, 'mainapp/show_personal.html',
-    {"personal": personal})
-
-def show_academic(request, academic_id):
-    academic = Result.objects.get(pk=academic_id)
-    return render(request, 'mainapp/show_academic.html',
-    {"academic": academic})
-
-def show_financial(request, financial_id):
-    financial = Financial.objects.get(pk=financial_id)
-    return render(request, 'mainapp/show_financial.html',
-    {"financial": financial})
+#Update Functions....
 
 def update_customer(request, customer_id):
     customer = Customer.objects.get(pk=customer_id)
@@ -158,11 +174,6 @@ def update_customer(request, customer_id):
     {"customer": customer,
     "form": form,
     })
-
-def delete_customer(request, customer_id):
-    customer = Customer.objects.get(pk=customer_id)
-    customer.delete()
-    return redirect('list_customers')
 
 def customer_access(request):
     submitted = False
@@ -181,12 +192,50 @@ def customer_access(request):
     "submitted": submitted})
 
 def update_customerAccess(request, customer_id):
-    customer = Customer.objects.get(pk=customer_id)
-    form = CustomerAccessForm(request.POST or None, instance= customer)
+    customer_access = Customer_access.objects.get(pk=customer_id)
+    form = CustomerAccessForm(request.POST or None, instance= customer_access)
     if form.is_valid():
         form.save()
         return redirect('list_customers')
     return render(request, 'mainapp/update_customerAccess.html',
-    {"customer": customer,
+    {"customer": customer_access,
     "form": form,
     })
+
+
+#Delete Functions....
+
+def delete_customer(request, customer_id):
+    customer = Customer.objects.get(pk=customer_id)
+    customer.delete()
+    return redirect('list_customers')
+
+
+#API ...
+
+@api_view(['GET'])
+def apiOverview(request):
+    api_urls = {
+        "Nothing"
+    }
+    return Response(api_urls)
+
+@api_view(['GET'])
+def personalApi(request, pk):
+    try:
+        personal = Personal.objects.get(id=pk)
+    except Personal.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = personalSerializer(personal, many=False)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+def academicApi(request, pk):
+    try:
+        academic = Result.objects.get(id=pk)
+    except Result.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = academicSerializer(academic, many=False)
+    return Response(serializer.data)

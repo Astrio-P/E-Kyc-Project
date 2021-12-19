@@ -82,6 +82,5 @@ class Customer_access(models.Model):
     student_parentAddress = models.BooleanField(default= False)
     student_parentPhone = models.BooleanField(default= False)
     Academic_Information = models.BooleanField(default=False)
-    
 
-   
+    
