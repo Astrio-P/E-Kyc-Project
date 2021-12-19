@@ -1,0 +1,64 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+    
+    <h1>Students</h1>
+    <h2>Personal Information</h2>
+     
+    
+{% for person in personal_list %}
+    <strong>ID: {{ person.student }}</strong>
+    <ul>
+    <li>Name: {{ person }}</li> 
+    <li>Program: {{ person.program_name }}</li>
+    <li>Phone: {{ person.cell_phone }}</li>
+    <li>Email: {{ person.personal_email }}</li>
+    <li>NID: {{ person.nid }}</li>
+    <li>Date of Birth: {{ person.date_of_birth }}</li>
+    <li>Sex: {{ person.sex }}</li> 
+    <li>Citizenship: {{ person.citizenship }}</li> 
+    <li>Blood Group: {{ person.blood_group }}</li>  
+    <li>Marital Status: {{ person.marital_status }}</li> 
+    <li>Current Address: {{ person.current_address }}</li> 
+    <li>Fathers Name: {{ person.father_name }}</li> 
+    <li>Mothers Name: {{ person.mother_name }}</li> 
+    <li>Parent Address: {{ person.parent_address }}</li> 
+    <li>Parent Phone: {{ person.parent_phone }}</li> 
+
+    </ul>
+    <br/>
+
+{% endfor %}
+
+    <h2>Financial Information</h2>
+
+{% for person in financial_list %}
+    <strong>ID: {{ person.student }}</strong>
+
+    <ul>
+    <li>Source: {{ person.source }}</li> 
+    <li>Yearly available for tuition: {{ person.est_available_yearly }}</li> 
+     
+    </ul>
+    <br/>
+
+{% endfor %}
+
+<h2>Academic Information</h2>
+
+{% for result in result_list %}
+    <strong>ID: {{ result.student }}</strong>
+
+    <ul>
+    <li>Year: {{ result.year }}</li> 
+    <li>Semester: {{ result.semester }}</li> 
+    <li>Course: {{ result.course }}</li> 
+    <li>Grade: {{ result.grade }}</li> 
+     
+    </ul>
+    <br/>
+
+{% endfor %}
+
+{% endblock %}
+

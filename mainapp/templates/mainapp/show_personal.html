@@ -1,0 +1,39 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+
+  
+    <div class="card">
+        <div class="card-header">
+          Personal Information
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{personal}}</h5>
+          <p class="card-text">
+            <ul>
+                <li>Name: {{ personal }}</li> 
+                <li>Program: {{ personal.program_name }}</li>
+                <li>Phone: {{ personal.cell_phone }}</li>
+                <li>Email: {{ personal.personal_email }}</li>
+                <li>NID: {{ personal.nid }}</li>
+                <li>Date of Birth: {{ personal.date_of_birth }}</li>
+                <li>Sex: {{ personal.sex }}</li> 
+                <li>Citizenship: {{ personal.citizenship }}</li> 
+                <li>Blood Group: {{ personal.blood_group }}</li>  
+                <li>Marital Status: {{ personal.marital_status }}</li> 
+                <li>Current Address: {{ personal.current_address }}</li> 
+                <li>Fathers Name: {{ personal.father_name }}</li> 
+                <li>Mothers Name: {{ personal.mother_name }}</li> 
+                <li>Parent Address: {{ personal.parent_address }}</li> 
+                <li>Parent Phone: {{ personal.parent_phone }}</li> 
+            </ul>
+          </p>
+          {% if user.is_authenticated %}
+            <a href="{% url 'update_customer' customer.id %}" class="btn btn-secondary">Update</a>
+            <a href="{% url 'delete_customer' customer.id %}" class="btn btn-danger">Delete</a>
+          {% endif %}
+        </div>
+      </div>
+
+{% endblock %}
+

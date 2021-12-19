@@ -1,0 +1,26 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+
+  
+    <div class="card">
+        <div class="card-header">
+          Students
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{student}}</h5>
+          <p class="card-text">
+            <ul>
+                <li><a href="{% url 'show_personal' personal.id %}" class="btn btn-secondary">Personal Information</a>
+                </li>
+                <li><a href="{% url 'show_academic' academic.id %}" class="btn btn-secondary">Academic Information</a>
+                </li>
+                <li><a href="{% url 'show_financial' financial.id %}" class="btn btn-secondary">Financial Information</a>
+                </li>
+            </ul>
+          </p>
+        </div>
+      </div>
+
+{% endblock %}
+

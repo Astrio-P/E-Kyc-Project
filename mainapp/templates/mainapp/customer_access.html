@@ -1,0 +1,29 @@
+{% extends 'mainapp/base.html' %}
+
+{% block content %}
+
+    <center>
+    {% if user.is_authenticated %}
+
+        <h1>Customer Access</h1>
+        <br></br>
+        {% if submitted %}
+            Info was submitted successfully!
+        {% else %}
+            <form action="" method=POST>
+                {% csrf_token %}
+                
+                {{ customerAccess_form.as_p }}
+
+                <input type="submit" value="Submit" class="btn btn-secondary">
+            </form>
+        {% endif %}
+        
+    {% else %}
+        <h1>You must be an admin to access this page...</h1>
+        <a href="{% url 'login' %}">Login Here</a>
+    {% endif %}
+    </center>
+
+{% endblock %}
+
