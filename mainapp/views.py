@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
+from rest_framework import serializers
 from rest_framework.serializers import Serializer
 from .models import Customer, Student, Financial, Result, Course, Customer_access
 from .forms import StudentForm, ResultForm, FinancialForm, CourseForm, CustomerForm,CustomerAccessForm
@@ -9,7 +10,7 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .serializers import studentSerializer, academicSerializer
+from .serializers import RegistrationSerializer, studentSerializer, academicSerializer
 
 
 
@@ -216,3 +217,19 @@ def academicApi(request, pk):
 
     serializer = academicSerializer(academic, many=False)
     return Response(serializer.data)
+
+@api_view(['POST',])
+def registration_view(request):
+    if request.method == 'POST':
+        serializer = RegistrationSerializer(data=request.data)
+        data = {}
+        if serializer.is_valid():
+            customer = serializer.save()
+            data['response']= "Successfully registered a new user"
+            data['email'] = customer.email
+            data['username'] = customer.username
+            data['name'] = customer.name
+            data['bin'] = customer.bin
+        else:
+            data = serializer.errors
+        return Response(data)

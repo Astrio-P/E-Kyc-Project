@@ -6,6 +6,7 @@ urlpatterns = [
     path('api/', views.apiOverview, name="api-overview"),
     path('api/student/<str:pk>', views.studentApi, name="student-api"),
     path('api/academic/<str:pk>', views.academicApi, name="academic-api"),
+    path('api/customer/register', views.registration_view, name="customer-register"),
     path('students', views.all_students, name="list_students"),
     path('show_student/<student_id>', views.show_student, name="show_student"),
     path('show_academic/<academic_id>', views.show_academic, name="show_academic"),

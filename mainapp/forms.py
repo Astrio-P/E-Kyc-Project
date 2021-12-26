@@ -40,7 +40,7 @@ class CourseForm(ModelForm):
 class CustomerForm(ModelForm):
     class Meta:
         model = Customer
-        fields = "__all__"
+        fields = ('name','username','email','bin' )
 
 #Creating Customer access form
 class CustomerAccessForm(ModelForm):
