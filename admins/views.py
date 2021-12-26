@@ -4,6 +4,8 @@ from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
 from .forms import RegisterUserForm
 
+
+
 # Create your views here.
 
 def login_admin(request):

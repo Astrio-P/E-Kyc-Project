@@ -1,8 +1,10 @@
 from django.urls import path
 from .import views
+from rest_framework.authtoken import views as authviews
 
 urlpatterns = [
     path('', views.home, name="home"),
+    path('api-token-auth/', authviews.obtain_auth_token),
     path('api/', views.apiOverview, name="api-overview"),
     path('api/student/<str:pk>', views.studentApi, name="student-api"),
     path('api/academic/<str:pk>', views.academicApi, name="academic-api"),
