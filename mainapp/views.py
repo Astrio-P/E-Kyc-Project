@@ -8,8 +8,9 @@ from rest_framework import permissions
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from .serializers import studentSerializer, academicSerializer
+from rest_framework.permissions import IsAuthenticated
 
 
 
@@ -198,6 +199,7 @@ def apiOverview(request):
     return Response(api_urls)
 
 @api_view(['GET'])
+@permission_classes((IsAuthenticated,))
 def studentApi(request, pk):
     try:
         personal = Student.objects.get(nsu_id=pk)
@@ -208,6 +210,7 @@ def studentApi(request, pk):
     return Response(serializer.data)
 
 @api_view(['GET'])
+@permission_classes((IsAuthenticated,))
 def academicApi(request, pk):
     try:
         academic = Result.objects.get(id=pk)
