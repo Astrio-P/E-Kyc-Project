@@ -6,10 +6,10 @@
     <h2>Personal Information</h2>
      
     
-{% for person in personal_list %}
-    <strong>ID: {{ person.student }}</strong>
+{% for person in student_list %}
+    <strong>ID: {{ person }}</strong>
     <ul>
-    <li>Name: {{ person }}</li> 
+    <li>Name: {{ person.full_name }}</li> 
     <li>Program: {{ person.program_name }}</li>
     <li>Phone: {{ person.cell_phone }}</li>
     <li>Email: {{ person.personal_email }}</li>

@@ -1,15 +1,13 @@
 from django.db import models
 from django.db.models.fields.reverse_related import ManyToOneRel
+from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
 
 
 class Student(models.Model):
     nsu_id = models.CharField(max_length=10, primary_key= True)
-    
-    def __str__(self):
-        return self.nsu_id
-
-class Personal(models.Model):
-    student = models.OneToOneField(Student,on_delete=models.CASCADE)
     full_name = models.CharField(max_length=50)
     program_name = models.CharField(max_length=100)
     personal_email = models.EmailField(max_length=50)
@@ -31,9 +29,10 @@ class Personal(models.Model):
     mother_name = models.CharField(max_length=50)
     parent_address = models.TextField(blank=True)
     parent_phone = models.CharField(max_length=15)
-
+    
     def __str__(self):
-        return self.full_name
+        return self.nsu_id
+    
 
 class Financial(models.Model):
     student = models.OneToOneField(Student,on_delete=models.CASCADE)
@@ -82,6 +81,5 @@ class Customer_access(models.Model):
     student_parentAddress = models.BooleanField(default= False)
     student_parentPhone = models.BooleanField(default= False)
     Academic_Information = models.BooleanField(default=False)
-    
 
-   
+    
